@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Booking from "../components/Boocking/Boocking";
+import BookingDetails from "../components/BookingDetails/BookingDetails";
 import Home from "../components/Home/Home";
 import PrivetRoute from "../components/PrivetRoute/PrivetRoute";
 import Error from "../pages/Error/Error";
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
     element: <Users />,
     errorElement: <Error />,
     children: [
+      {
+        path: "/booking-details",
+        element: <BookingDetails />,
+      },
       {
         path: "/login",
         element: <Login />,

@@ -1,6 +1,6 @@
 import { updateProfile } from "firebase/auth";
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthProvider";
 import Loading from "../../components/Loading/Loading";
 
@@ -9,7 +9,7 @@ const Register = () => {
   const [error, setError] = useState(
     "Password Minimum 6 character. At least one uppercase letter, one lowercase letter, one number and one special character"
   );
-
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     setError("");
@@ -36,6 +36,7 @@ const Register = () => {
         })
           .then(() => {
             alert("Registration successful");
+            navigate("/");
           })
           .catch((err) => setError(err.message));
       })

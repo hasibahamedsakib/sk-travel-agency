@@ -1,11 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthProvider";
 import LoginFBGoogle from "./loginFBGoogle";
 
 const Login = () => {
-  const [password, setPassword] = useState("");
-  const { loginUser } = useContext(AuthContext);
+  const [error, setError] = useState("");
+  const emailRef = useRef(null);
+
+  const { loginUser, resetPassword } = useContext(AuthContext);
   const location = useLocation();
 
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const Login = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
+    setError("");
     const email = event.target.email.value;
     const password = event.target.password.value;
 
@@ -20,11 +23,26 @@ const Login = () => {
       .then((result) => {
         const loggedUser = result.user;
         console.log(loggedUser);
+        navigate(from || "/");
       })
-      .catch((err) => setPassword(err.message));
-    navigate(from || "/");
+      .catch((err) => setError(err.message));
   };
 
+  const handleReset = () => {
+    const email = emailRef.current.value;
+    if (email) {
+      resetPassword(email)
+        .then(() => {
+          alert("password reset email has been send");
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          setError(errorMessage);
+        });
+    } else {
+      alert("enter your email address");
+    }
+  };
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -49,6 +67,7 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="email"
+                  ref={emailRef}
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 focus:outline-none"
                   placeholder="name@company.com"
                   required
@@ -70,7 +89,7 @@ const Login = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 focus:outline-none"
                   required
                 />
-                <p className="text-red-500">{password}</p>
+                <p className="text-red-500">{error}</p>
               </div>
 
               <button
@@ -88,6 +107,15 @@ const Login = () => {
                 >
                   Sign up
                 </Link>
+              </p>
+              <p className="text-sm font-light text-gray-500 ">
+                forgot your password ?
+                <span
+                  onClick={() => handleReset()}
+                  className="font-medium text-blue-600 hover:underline ml-2 cursor-pointer"
+                >
+                  Reset Now
+                </span>
               </p>
             </form>
             <LoginFBGoogle />

@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarAlt } from "react-icons/fa";
 
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 
 const Booking = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -53,7 +53,9 @@ const Booking = () => {
             <FaCalendarAlt />
           </div>
         </div>
-        <button className="btn w-full py-3 mt-5">Start Booking</button>
+        <Link to="/booking-details">
+          <button className="btn w-full py-3 mt-5">Start Booking</button>
+        </Link>
       </div>
     </div>
   );
