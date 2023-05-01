@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Booking from "../components/Boocking/Boocking";
-import Error from "../components/Error/Error";
 import Home from "../components/Home/Home";
+import PrivetRoute from "../components/PrivetRoute/PrivetRoute";
+import Error from "../pages/Error/Error";
 import Login from "../pages/Login/Login";
 import Main from "../pages/Main/Main";
 import Register from "../pages/Register/Register";
@@ -18,9 +19,15 @@ const router = createBrowserRouter([
       },
       {
         path: "booking/:id",
-        element: <Booking />,
+        element: (
+          <PrivetRoute>
+            <Booking />
+          </PrivetRoute>
+        ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/booking/${params.id}`),
+          fetch(
+            `https://sk-travel-new-name32n.vercel.app/booking/${params.id}`
+          ),
       },
       {
         path: "login",

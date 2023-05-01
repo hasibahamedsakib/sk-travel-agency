@@ -1,7 +1,56 @@
-import React from "react";
+import { updateProfile } from "firebase/auth";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthProvider";
+import Loading from "../../components/Loading/Loading";
 
 const Register = () => {
+  const { createUser, loading } = useContext(AuthContext);
+  const [error, setError] = useState(
+    "Password Minimum 6 character. At least one uppercase letter, one lowercase letter, one number and one special character"
+  );
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setError("");
+    const name = event.target.username.value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    const confirm_password = event.target.confirm_password.value;
+    if (loading) {
+      return <Loading />;
+    }
+    if (password !== confirm_password) {
+      return setError("password doesn't match");
+    }
+    if (password.length < 6) {
+      return setError("password must be 6 character");
+    }
+    // if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/.test(password)) {
+    //   return setError(
+    //     " at least one uppercase letter, one lowercase letter, one number and one special character"
+    //   );
+    // }
+
+    createUser(email, password)
+      .then((result) => {
+        const createUser = result.user;
+        console.log(createUser);
+        updateProfile(createUser, {
+          displayName: name,
+        })
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((err) => console.log(err.message));
+      })
+      .catch((error) => console.log(error.message));
+
+    console.log(name);
+    console.log(email);
+    console.log(password, "-------", confirm_password);
+  };
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -10,7 +59,27 @@ const Register = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Create and account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form
+              className="space-y-4 md:space-y-6"
+              action="#"
+              onSubmit={handleSubmit}
+            >
+              <div>
+                <label
+                  htmlFor="username"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 focus:outline-none"
+                  placeholder="enter your name"
+                  required
+                />
+              </div>
               <div>
                 <label
                   htmlFor="email"
@@ -35,7 +104,7 @@ const Register = () => {
                   Password
                 </label>
                 <input
-                  type="password"
+                  type="text"
                   name="password"
                   id="password"
                   placeholder="••••••••"
@@ -51,13 +120,14 @@ const Register = () => {
                   Confirm password
                 </label>
                 <input
-                  type="confirm-password"
-                  name="confirm-password"
-                  id="confirm-password"
+                  type="password"
+                  name="confirm_password"
+                  id="confirm_password"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 focus:outline-none"
                   required
                 />
+                <p className="text-red-500 text-sm ">{error}</p>
               </div>
               <div className="flex items-start">
                 <div className="flex items-center h-5">

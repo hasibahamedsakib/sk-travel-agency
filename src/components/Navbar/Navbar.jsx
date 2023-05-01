@@ -1,8 +1,10 @@
-import React from "react";
-import { FaSearch } from "react-icons/fa";
+import React, { useContext } from "react";
+import { FaSearch, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthProvider";
 import logo from "../../assets/travel-logo.png";
 const Navbar = () => {
+  const { user, logoutUser } = useContext(AuthContext);
   return (
     <nav className="container py-7 flex justify-between items-center">
       <Link to="/">
@@ -51,11 +53,23 @@ const Navbar = () => {
         >
           Contact
         </NavLink>
-
-        <Link to="/login">
-          <button className="btn ">Login</button>
-        </Link>
       </div>
+
+      <span>
+        {user && user ? (
+          <span className="flex space-x-2 items-center">
+            <Link>{<FaUserCircle className="w-6 h-6" />}</Link>
+            <FaSignOutAlt
+              onClick={() => logoutUser()}
+              className="w-6 h-6 cursor-pointer"
+            />
+          </span>
+        ) : (
+          <Link to="/login">
+            <button className="btn ">Login</button>
+          </Link>
+        )}
+      </span>
     </nav>
   );
 };

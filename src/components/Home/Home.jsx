@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
+import Loading from "../Loading/Loading";
 
 const Home = () => {
   const [travelDestinations, setTravelDestinations] = useState([]);
@@ -25,7 +26,7 @@ const Home = () => {
     setActiveSlideIndex(swiper.realIndex);
   };
   if (loading) {
-    return <h1>Loading....</h1>;
+    return <Loading />;
   }
   return (
     <>
