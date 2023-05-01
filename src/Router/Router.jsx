@@ -5,6 +5,7 @@ import PrivetRoute from "../components/PrivetRoute/PrivetRoute";
 import Error from "../pages/Error/Error";
 import Login from "../pages/Login/Login";
 import Main from "../pages/Main/Main";
+import Users from "../pages/Main/Users";
 import Register from "../pages/Register/Register";
 
 const router = createBrowserRouter([
@@ -29,12 +30,19 @@ const router = createBrowserRouter([
             `https://sk-travel-new-name32n.vercel.app/booking/${params.id}`
           ),
       },
+    ],
+  },
+  {
+    path: "/",
+    element: <Users />,
+    errorElement: <Error />,
+    children: [
       {
-        path: "login",
+        path: "/login",
         element: <Login />,
       },
       {
-        path: "register",
+        path: "/register",
         element: <Register />,
       },
     ],

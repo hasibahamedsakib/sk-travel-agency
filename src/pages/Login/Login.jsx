@@ -15,12 +15,11 @@ const Login = () => {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
-    console.log(email, "------", password);
+
     loginUser(email, password)
       .then((result) => {
         const loggedUser = result.user;
         console.log(loggedUser);
-        // navigate();
       })
       .catch((err) => setPassword(err.message));
     navigate(from || "/");
