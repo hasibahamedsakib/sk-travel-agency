@@ -26,11 +26,6 @@ const Register = () => {
     if (password.length < 6) {
       return setError("password must be 6 character");
     }
-    // if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/.test(password)) {
-    //   return setError(
-    //     " at least one uppercase letter, one lowercase letter, one number and one special character"
-    //   );
-    // }
 
     createUser(email, password)
       .then((result) => {
@@ -39,12 +34,12 @@ const Register = () => {
         updateProfile(createUser, {
           displayName: name,
         })
-          .then((result) => {
-            console.log(result);
+          .then(() => {
+            alert("Registration successful");
           })
-          .catch((err) => console.log(err.message));
+          .catch((err) => setError(err.message));
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => setError(error.message));
 
     console.log(name);
     console.log(email);

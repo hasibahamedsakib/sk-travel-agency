@@ -58,7 +58,8 @@ const Navbar = () => {
       <span>
         {user && user ? (
           <span className="flex space-x-2 items-center">
-            <Link>{<FaUserCircle className="w-6 h-6" />}</Link>
+            <Link>{<FaUserCircle className={`w-6 h-6 `} />}</Link>
+            <p>{user?.displayName}</p>
             <FaSignOutAlt
               onClick={() => logoutUser()}
               className="w-6 h-6 cursor-pointer"
